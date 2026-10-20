@@ -1,0 +1,15 @@
+{
+  "name": "tuition-payment-resilience-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fee Service and simulated bank: timeouts, connection pooling and idempotent retries",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "start:fee": "node src/fee.js",
+    "start:bank": "node src/bank.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "benchmark": "node scripts/benchmark.js"
+  },
+  "dependencies": { "express": "^4.21.2" }
+}

@@ -1,0 +1,131 @@
+{
+  "generatedAt": "2026-10-20T03:12:42.712Z",
+  "node": "v24.21.0",
+  "platform": "win32",
+  "before": {
+    "unavailable": {
+      "code": 503,
+      "status": "FAILED",
+      "ms": 16.7,
+      "feesCode": 200,
+      "feesMs": 2,
+      "recoveryCode": 201
+    },
+    "slow": {
+      "singleCode": 201,
+      "singleStatus": "PAID",
+      "singleMs": 5003.2,
+      "concurrentPaid": 10,
+      "concurrentPending": 10,
+      "maxPaymentMs": 10028.1,
+      "feesMs": 1.8,
+      "outstanding": 49989000
+    },
+    "pooling": {
+      "paid": 200,
+      "totalMs": 286.7,
+      "connections": 201,
+      "requests": 200,
+      "charges": 200,
+      "duplicates": 0,
+      "afterIdlePaid": 5
+    },
+    "faults": {
+      "drop": {
+        "paid": 45,
+        "pending": 15,
+        "failed": 0,
+        "totalMs": 82.2,
+        "maxPaymentMs": 2.5,
+        "connections": 61,
+        "requests": 60,
+        "charges": 60,
+        "duplicates": 0,
+        "outstanding": 49955000
+      },
+      "fail": {
+        "paid": 40,
+        "pending": 0,
+        "failed": 20,
+        "totalMs": 82.1,
+        "maxPaymentMs": 2.6,
+        "connections": 61,
+        "requests": 60,
+        "charges": 40,
+        "duplicates": 0,
+        "outstanding": 49960000
+      },
+      "rejected": {
+        "code": 402,
+        "status": "FAILED",
+        "connections": 2,
+        "requests": 1,
+        "charges": 0,
+        "duplicates": 0
+      }
+    }
+  },
+  "after": {
+    "unavailable": {
+      "code": 503,
+      "status": "FAILED",
+      "ms": 621.3,
+      "feesCode": 200,
+      "feesMs": 1,
+      "recoveryCode": 201
+    },
+    "slow": {
+      "singleCode": 504,
+      "singleStatus": "PENDING",
+      "singleMs": 4005.2,
+      "concurrentPaid": 0,
+      "concurrentPending": 20,
+      "maxPaymentMs": 4015.1,
+      "feesMs": 1.2,
+      "outstanding": 50000000
+    },
+    "pooling": {
+      "paid": 200,
+      "totalMs": 167.3,
+      "connections": 11,
+      "requests": 200,
+      "charges": 200,
+      "duplicates": 0,
+      "afterIdlePaid": 5
+    },
+    "faults": {
+      "drop": {
+        "paid": 60,
+        "pending": 0,
+        "failed": 0,
+        "totalMs": 934.1,
+        "maxPaymentMs": 63.3,
+        "connections": 17,
+        "requests": 75,
+        "charges": 60,
+        "duplicates": 0,
+        "outstanding": 49940000
+      },
+      "fail": {
+        "paid": 60,
+        "pending": 0,
+        "failed": 0,
+        "totalMs": 2443.4,
+        "maxPaymentMs": 373,
+        "connections": 2,
+        "requests": 88,
+        "charges": 60,
+        "duplicates": 0,
+        "outstanding": 49940000
+      },
+      "rejected": {
+        "code": 402,
+        "status": "FAILED",
+        "connections": 2,
+        "requests": 1,
+        "charges": 0,
+        "duplicates": 0
+      }
+    }
+  }
+}

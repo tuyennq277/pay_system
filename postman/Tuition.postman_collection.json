@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "Tuition payment resilience lab",
+    "description": "Fee Service + bank. Restart services between fault scenarios; retry a PENDING payment using its existing paymentId.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "feeUrl", "value": "http://localhost:4001" },
+    { "key": "bankUrl", "value": "http://localhost:4002" },
+    { "key": "studentId", "value": "1" },
+    { "key": "amount", "value": "1000" },
+    { "key": "paymentId", "value": "P1" }
+  ],
+  "item": [
+    {
+      "name": "Student fees",
+      "request": { "method": "GET", "url": "{{feeUrl}}/students/{{studentId}}/fees" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Fees remain available', () => pm.response.to.have.status(200));",
+        "pm.test('Read under 300 ms', () => pm.expect(pm.response.responseTime).to.be.below(300));"
+      ] } }]
+    },
+    {
+      "name": "Create payment",
+      "request": {
+        "method": "POST", "url": "{{feeUrl}}/students/{{studentId}}/payments",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"amount\": {{amount}}}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "const body = pm.response.json();",
+        "if (body.paymentId) pm.collectionVariables.set('paymentId', body.paymentId);",
+        "pm.test('Payment completes within 4.5 s', () => pm.expect(pm.response.responseTime).to.be.at.most(4500));",
+        "pm.test('Status agrees with HTTP code', () => {",
+        "  if (pm.response.code === 201) pm.expect(body.status).to.eql('PAID');",
+        "  else { pm.expect(body).to.have.property('error'); pm.expect(body).to.have.property('paymentId'); pm.expect(body.status).to.eql(pm.response.code === 504 ? 'PENDING' : 'FAILED'); }",
+        "});"
+      ] } }]
+    },
+    {
+      "name": "Inspect last payment",
+      "request": { "method": "GET", "url": "{{feeUrl}}/payments/{{paymentId}}" }
+    },
+    {
+      "name": "Retry last PENDING payment with same key",
+      "request": { "method": "POST", "url": "{{feeUrl}}/payments/{{paymentId}}/retry" }
+    },
+    {
+      "name": "Bank stats",
+      "request": { "method": "GET", "url": "{{bankUrl}}/stats" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('No duplicate debits', () => pm.expect(pm.response.json().duplicates).to.eql(0));"
+      ] } }]
+    },
+    {
+      "name": "Bank direct charge (send twice to verify replay)",
+      "request": {
+        "method": "POST", "url": "{{bankUrl}}/charges",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Idempotency-Key", "value": "postman-demo-P1" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"reference\":\"postman-demo-P1\",\"amount\":1000}" }
+      }
+    }
+  ]
+}
